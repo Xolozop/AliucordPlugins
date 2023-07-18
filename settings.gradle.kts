@@ -15,7 +15,3 @@ include(
 //
 // Otherwise, if you want a different structure, for example all plugins in a folder called "plugins",
 // then simply change the path
-rootProject.children.forEach {
-    // Change kotlin to java if you'd rather use java
-    it.projectDir = file("ExamplePlugins/java/${it.name}")
-}
