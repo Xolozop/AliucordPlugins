@@ -1,33 +1,21 @@
-//include(":Someone")
-//include(":byebyeSlashCommands")
-//include(":EncryptDMs")
-
-include(":LightShotRoulette")
-include(":BetterSilentTyping")
-include(":HighlightReplies")
-include(":EditServersLocally")
-include(":InvisibleMessages")
-include(":StupidityDB")
-include(":Base64")
-include(":EditMessagesLocally")
-include(":Vibrator")
-include(":PluginRepo")
-include(":KyzaMode")
-include(":ThemeRepo")
-//include(":0TestPlugin")
-include(":Vibrator2")
-include(":GoodPerson")
-include(":StupitCase")
-include(":Amog\u200C\u200Dus")
-include(":ReviewDB")
-include(":ServerReviews")
-include(":EditEverything")
-include(":DisableVerifyScreen")
-include(":UpsideDownChat")
-include(":ShuffleUsers")
-include(":VoiceMessages")
-include(":UserReviews")
-//include(":Shortcuts")
-//include(":FixTimestamps")
-
 rootProject.name = "AliucordPlugins"
+
+// This file sets what projects are included. Every time you add a new project, you must add it
+// to the includes below.
+
+// Plugins are included like this
+include(
+    "MathNotation"
+)
+
+// This is required because plugins are in the ExamplePlugins/kotlin subdirectory.
+//
+// Assuming you put all your plugins into the project root, so on the same
+// level as this file, simply remove everything below.
+//
+// Otherwise, if you want a different structure, for example all plugins in a folder called "plugins",
+// then simply change the path
+rootProject.children.forEach {
+    // Change kotlin to java if you'd rather use java
+    it.projectDir = file("ExamplePlugins/java/${it.name}")
+}
