@@ -26,7 +26,7 @@ public class MathNotation extends Plugin {
                 ),
                 ctx -> {
                     // Check if a user argument was passed
-                    if (ctx.containsArg("help") && getBoolOrDefault("help", false)) {
+                    if (ctx.containsArg("help") && ctx.getBoolOrDefault("help", false)) {
                         return new CommandsAPI.CommandResult("Help");
                     } else {
                         // Returns either the argument value if present, or the defaultValue ("World" in this case)
