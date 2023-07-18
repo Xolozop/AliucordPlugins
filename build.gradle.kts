@@ -35,10 +35,10 @@ subprojects {
 
 
     aliucord {
-        author("mantikafasi", 287555395151593473)
+        author("gojira", 877547767306792960) 
 
-        updateUrl.set("https://raw.githubusercontent.com/mantikafasi/AliucordPlugins/builds/updater.json")
-        buildUrl.set("https://raw.githubusercontent.com/mantikafasi/AliucordPlugins/builds/%s.zip")
+        updateUrl.set("https://raw.githubusercontent.com/Xolozop/AliucordPlugins/builds/updater.json")
+        buildUrl.set("https://raw.githubusercontent.com/Xolozop/AliucordPlugins/builds/%s.zip")
     }
 
     android {
