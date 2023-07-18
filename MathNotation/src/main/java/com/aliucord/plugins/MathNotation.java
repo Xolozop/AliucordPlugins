@@ -1,4 +1,4 @@
-package com.github.yournamehere;
+package com.github.Xolozop;
 
 import android.content.Context;
 import com.aliucord.CollectionUtils;
@@ -17,7 +17,7 @@ import com.discord.widgets.chat.list.entries.MessageEntry;
 @AliucordPlugin(requiresRestart = false /* Whether your plugin requires a restart after being installed/updated */)
 // Plugin class. Must extend Plugin and override start and stop
 // Learn more: https://github.com/Aliucord/documentation/blob/main/plugin-dev/1_introduction.md#basic-plugin-structure
-public class MyFirstPatch extends Plugin {
+public class MathNotation extends Plugin {
     @Override
     public void start(Context context) throws Throwable {
         // Patch that adds an embed with message statistics to each message
