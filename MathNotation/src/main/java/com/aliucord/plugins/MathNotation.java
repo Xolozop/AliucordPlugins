@@ -50,17 +50,19 @@ public class MathNotation extends Plugin {
                         String newmes = "";
 
                         int ind = mes.indexOf("++[");
-
-                        while (ind > -1 && mes.indexOf("]", ind) > -1) {
-                            String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // x**6 + 13 - 12/13
-
-                            if (exp.equals("help")) {
-                                newmes += help("");
-                            } else {
-                                newmes += exp;
-                            }
-                            ind = mes.indexOf("++[", mes.indexOf("]", ind));
-                        }
+		        newmes = mes.substring(0, ind);
+		
+		        while (ind > -1 && mes.indexOf("]", ind) > -1) {
+		            String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // x**6 + 13 - 12/13
+		
+		            if (exp.equals("help")) {
+		                newmes += help("");
+		            } else {
+		                newmes += exp;
+		            }
+		            newmes += mes.substring(mes.indexOf("]", ind)+1, mes.indexOf("++[", mes.indexOf("]", ind)) == -1 ? mes.length() : mes.indexOf("++[", mes.indexOf("]", ind)));
+		            ind = mes.indexOf("++[", mes.indexOf("]", ind));
+		        }
                         ReflectUtils.setField(content, "textContent", newmes.trim());
                     } catch (NoSuchFieldException | IllegalAccessException e) {
                         e.printStackTrace();
