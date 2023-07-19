@@ -1,63 +1,76 @@
 package com.github.Xolozop;
 
 import android.content.Context;
-import com.aliucord.CollectionUtils;
+
 import com.aliucord.annotations.AliucordPlugin;
-import com.aliucord.entities.MessageEmbedBuilder;
 import com.aliucord.entities.Plugin;
-import com.aliucord.patcher.*;
-import com.aliucord.wrappers.embeds.MessageEmbedWrapper;
-import com.discord.models.user.CoreUser;
-import com.discord.stores.StoreUserTyping;
-import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemMessage;
-import com.discord.widgets.chat.list.entries.ChatListEntry;
-import com.discord.widgets.chat.list.entries.MessageEntry;
+import com.aliucord.patcher.PreHook;
+import com.aliucord.utils.ReflectUtils;
+import com.discord.widgets.chat.MessageContent;
+import com.discord.widgets.chat.MessageManager;
+import com.discord.widgets.chat.input.ChatInputViewModel;
 
-// Aliucord Plugin annotation. Must be present on the main class of your plugin
-@AliucordPlugin(requiresRestart = false /* Whether your plugin requires a restart after being installed/updated */)
-// Plugin class. Must extend Plugin and override start and stop
-// Learn more: https://github.com/Aliucord/documentation/blob/main/plugin-dev/1_introduction.md#basic-plugin-structure
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+
+import kotlin.jvm.functions.Function1;
+
+@SuppressWarnings("unused")
+@AliucordPlugin
 public class MathNotation extends Plugin {
+    public static String help(String all) {
+        String fraction = "a/n → \u1D43/\u2099" + '\n';
+        String pow = "a^b, a**b, pow(a, b) → a\u1D47" + '\n';
+        String sqrt = "sqrt(x) → \u221Ax" + Character.toString('\u0304') + '\n';
+        String root = "rootn(x), root(n, x) → ⁿ\u221Ax" + Character.toString('\u0304') + '\n';
+        String abs = "abs(x) → |x|" + '\n';
+        String substr = "x_n \u2192 x\u2099" + '\n';
+        String exp = "exp(x) → e\u02E3" + '\n';
+        //String lg = "lg(x) \u2192 log₁₀(x)" + '\n'; 
+        String log = "log(x) \u2192 log₂(x)" + '\n';
+        String loga = "loga(x), log(a, x) \u2192 log\u2090(x)" + '\n';
+        all = sqrt + root + abs + exp + fraction + pow + log + loga + substr + "\nConstants:";
+        String[] greek= {"pi", "alpha", "beta", "sigma", "gamma", "nu", "mu", "phi", "psi", "tau", "eta", "rho"};
+        String[] constants= {"\u03c0", "\u03B1", "\u03B2", "\u03C3", "\u03B3", "\u03BD", "\u03BC", "\u03C6", "\u03C8", "\u03C4", "\u03B7", "\u03C1"};
+        for (var i = 0; i < greek.length; i++) {
+            all += greek[i] + " \u2192 " + constants[i] + '\n';
+        }
+		return all;
+    }
+
     @Override
-    public void start(Context context) throws Throwable {
-        // Patch that adds an embed with message statistics to each message
-        // Patched method is WidgetChatListAdapterItemMessage.onConfigure(int type, ChatListEntry entry)
-        patcher.patch(
-                // see https://docs.oracle.com/javase/tutorial/reflect/class/classNew.html
-                WidgetChatListAdapterItemMessage.class.getDeclaredMethod("onConfigure", int.class, ChatListEntry.class),
-                new Hook(param -> { // see https://api.xposed.info/reference/de/robv/android/xposed/XC_MethodHook.MethodHookParam.html
-                    // Obtain the second argument passed to the method, so the ChatListEntry
-                    // Because this is a Message item, it will always be a MessageEntry, so cast it to that
-                    var entry = (MessageEntry) param.args[1];
+    public void start(Context context) throws NoSuchMethodException {
+        patcher.patch(ChatInputViewModel.class.getDeclaredMethod("sendMessage", Context.class, MessageManager.class, MessageContent.class, List.class, boolean.class, Function1.class),
+                new PreHook(cf -> {
+                    var thisobj = (ChatInputViewModel) cf.thisObject;
+                    var content = (MessageContent) cf.args[2];
+                    try {
+                        var mes = content.component1().trim() + " "; // получить сообщение как строку
+                        String newmes = "";
 
-                    // You need to be careful when messing with messages, because they may be loading
-                    // (user sent a message, and it is currently sending)
-                    if (entry.getMessage().isLoading()) return;
+                        int ind = mes.indexOf("++[");
 
-                    // Now add an embed with the statistics
+                        while (ind > -1 && mes.indexOf("]", ind) > -1) {
+                            String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // x**6 + 13 - 12/13
 
-                    // This method may be called multiple times per message, e.g. if it is edited,
-                    // so first remove existing embeds
-                    CollectionUtils.removeIf(entry.getMessage().getEmbeds(), e -> {
-                        // MessageEmbed is an obfuscated class. However, Aliucord provides wrappers for commonly used
-                        // obfuscated classes, the MessageEmbedWrapper in this case.
-                        return "Message Statistics".equals(MessageEmbedWrapper.getTitle(e));
-                    });
-
-                    // Creating embeds is a pain, so Aliucord provides a convenient builder
-                    var embed = new MessageEmbedBuilder().
-                            setTitle("Message Statistics")
-                            .addField("Length", entry.getMessage().getContent() != null ? Integer.toString(entry.getMessage().getContent().length()) : "0", false)
-                            .addField("ID", Long.toString(entry.getMessage().getId()), false).build();
-
-                    entry.getMessage().getEmbeds().add(embed);
-                })
-        );
+                            if (exp.equals("help")) {
+                                newmes += help("");
+                            } else {
+                                newmes += exp;
+                            }
+                            ind = mes.indexOf("++[", mes.indexOf("]", ind));
+                        }
+                        ReflectUtils.setField(content, "textContent", newmes.trim());
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }));
     }
 
     @Override
     public void stop(Context context) {
-        // Remove all patches
         patcher.unpatchAll();
+        commands.unregisterAll();
     }
 }
