@@ -285,7 +285,7 @@ public class MathNotation extends Plugin {
 										if (s > 0) break;
 										operation += symbol;
 									}
-									operation = StringFormatter.reverseString(operation);
+									operation = reverseString(operation);
 									//System.out.println("|" + operation + "|" + toSuperscript(operation.substring(0, operation.length()-1))+ "/");
 									exp = exp.replace(operation, toSuperscript(operation.substring(0, operation.length()-1)) + "/");
 									i = exp.indexOf("/", i+1);
