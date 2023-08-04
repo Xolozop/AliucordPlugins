@@ -35,7 +35,7 @@ public class MathNotation extends Plugin {
             put("rho", Character.toString('\u03C1'));
         }
     };
-    public static String[] greek= {"pi", "alpha", "beta", "sigma", "gamma", "nu", "mu", "phi", "psi", "tau", "eta", "rho"}; // constants - type 1
+    public static String[] greek = {"pi", "alpha", "beta", "sigma", "gamma", "nu", "mu", "phi", "psi", "tau", "eta", "rho"}; // constants
 
     public static HashMap<String, String> superscript = new HashMap<String, String>() {
 		{
@@ -238,9 +238,8 @@ public class MathNotation extends Plugin {
 		return str;
 	}
 
-	public class StringFormatter {  
-		public static String reverseString(String str){  
-			StringBuilder sb=new StringBuilder(str);  
+	public static Strinп reverseString(String str) {  
+			StringBuilder sb = new StringBuilder(str);  
 			sb.reverse();  
 			return sb.toString();  
 		}  
