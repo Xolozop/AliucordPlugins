@@ -38,49 +38,49 @@ public class MathNotation extends Plugin {
     public static String[] greek= {"pi", "alpha", "beta", "sigma", "gamma", "nu", "mu", "phi", "psi", "tau", "eta", "rho"}; // constants - type 1
 
     public static HashMap<String, String> superscript = new HashMap<String, String>() {
-	{
-		put("0", Character.toString('\u2070'));
-		put("1", Character.toString('\u00B9'));
-		put("2", Character.toString('\u00B2'));
-		put("3", Character.toString('\u00B3'));
-		put("4", Character.toString('\u2074'));
-		put("5", Character.toString('\u2075'));
-		put("6", Character.toString('\u2076'));
-		put("7", Character.toString('\u2077'));
-		put("8", Character.toString('\u2078'));
-		put("9", Character.toString('\u2079'));
-		put("+", Character.toString('\u207A'));
-		put("-", Character.toString('\u207B'));
-		put("=", Character.toString('\u207C'));
-		put("(", Character.toString('\u207D'));
-		put(")", Character.toString('\u207E'));
-		put("a", Character.toString('\u1D43'));
-		put("b", Character.toString('\u1D47'));
-		put("c", Character.toString('\u1D9C'));
-		put("d", Character.toString('\u1D48'));
-		put("e", Character.toString('\u1D49'));
-		put("f", Character.toString('\u1DA0'));
-		put("g", Character.toString('\u1D4D'));
-		put("h", Character.toString('\u02B0'));
-		put("i", Character.toString('\u2071'));
-		put("j", Character.toString('\u02B2'));
-		put("k", Character.toString('\u1D4F'));
-		put("l", Character.toString('\u02E1'));
-		put("m", Character.toString('\u1D50'));
-		put("n", Character.toString('\u207F'));
-		put("o", Character.toString('\u1D52'));
-		put("p", Character.toString('\u1D56'));
-		put("r", Character.toString('\u02B3'));
-		put("s", Character.toString('\u02E2'));
-		put("t", Character.toString('\u1D57'));
-		put("u", Character.toString('\u1D58'));
-		put("v", Character.toString('\u1D5B'));
-		put("w", Character.toString('\u02B7'));
-		put("x", Character.toString('\u02E3'));
-		put("y", Character.toString('\u02B8'));
-		put("z", Character.toString('\u1DBB'));
-		put(" ", Character.toString(' '));
-	}
+		{
+			put("0", Character.toString('\u2070'));
+			put("1", Character.toString('\u00B9'));
+			put("2", Character.toString('\u00B2'));
+			put("3", Character.toString('\u00B3'));
+			put("4", Character.toString('\u2074'));
+			put("5", Character.toString('\u2075'));
+			put("6", Character.toString('\u2076'));
+			put("7", Character.toString('\u2077'));
+			put("8", Character.toString('\u2078'));
+			put("9", Character.toString('\u2079'));
+			put("+", Character.toString('\u207A'));
+			put("-", Character.toString('\u207B'));
+			put("=", Character.toString('\u207C'));
+			put("(", Character.toString('\u207D'));
+			put(")", Character.toString('\u207E'));
+			put("a", Character.toString('\u1D43'));
+			put("b", Character.toString('\u1D47'));
+			put("c", Character.toString('\u1D9C'));
+			put("d", Character.toString('\u1D48'));
+			put("e", Character.toString('\u1D49'));
+			put("f", Character.toString('\u1DA0'));
+			put("g", Character.toString('\u1D4D'));
+			put("h", Character.toString('\u02B0'));
+			put("i", Character.toString('\u2071'));
+			put("j", Character.toString('\u02B2'));
+			put("k", Character.toString('\u1D4F'));
+			put("l", Character.toString('\u02E1'));
+			put("m", Character.toString('\u1D50'));
+			put("n", Character.toString('\u207F'));
+			put("o", Character.toString('\u1D52'));
+			put("p", Character.toString('\u1D56'));
+			put("r", Character.toString('\u02B3'));
+			put("s", Character.toString('\u02E2'));
+			put("t", Character.toString('\u1D57'));
+			put("u", Character.toString('\u1D58'));
+			put("v", Character.toString('\u1D5B'));
+			put("w", Character.toString('\u02B7'));
+			put("x", Character.toString('\u02E3'));
+			put("y", Character.toString('\u02B8'));
+			put("z", Character.toString('\u1DBB'));
+			put(" ", Character.toString(' '));
+		}
 	};
 	public static HashMap<String, String> subscript = new HashMap<String, String>() {
 		{
@@ -141,99 +141,190 @@ public class MathNotation extends Plugin {
 			put("1/10", Character.toString('\u2152'));
 		}
 	};
-    public static String Convert(String a, int type) {
-        String new_a = "";
-        for (String sym : a.split("")) {
-            switch(type) {
-                case 1: new_a += superscript.get(sym); break;
-                case 2: new_a += subscript.get(sym); break;
-            }
-        }
-        return new_a;
-    }
-    public static String Type2(String s) {
-        if (fractions.get(s) == null) {
-            String[] new_s = s.split("\\/|\\*\\*|\\^|_");
-            if (s.contains("/")) {
-                return Convert(new_s[0], 1) + "/" + Convert(new_s[1], 2);  // fractions and etc - type 2
-            } else {
-                if (s.contains("_")) {
-                    return new_s[0] + Convert(new_s[1], 2);
-                } else {
-                    return new_s[0] + Convert(new_s[1], 1);
-                }
-            }
-        } else {
-            return fractions.get(s);
-        }
-    }
 
     public static String help(String all) {
         String fraction = "a/n → \u1D43/\u2099" + '\n';
         String pow = "a^b, a**b, pow(a, b) → a\u1D47" + '\n';
-        String sqrt = "sqrt(x) → \u221AX" + '\u031A' + '\n';
+        String sqrt = "sqrt(x) → \u221AX" + '\u0332' + '\n';
         //String sqrt = "sqrt(x) → \u221A" + 'x' + '\u203e' + '\n';
-        String root = "rootn(x), root(n, x) → ⁿ\u221Ax" + Character.toString('\u0304') + '\n';
+        String root = "rootn(x), root(n, x) → ⁿ\u221Ax" + "\u0332" + '\n';
         String abs = "abs(x) → |x|" + '\n';
         String substr = "x_n \u2192 x\u2099" + '\n';
         String exp = "exp(x) → e\u02E3" + '\n';
         //String lg = "lg(x) \u2192 log₁₀(x)" + '\n'; 
         String log = "log(x) \u2192 log₂(x)" + '\n';
         String loga = "loga(x), log(a, x) \u2192 log\u2090(x)" + '\n';
-        all = '\n' + fraction + pow + sqrt + root + abs + substr + exp + log + loga + "\nConstants:\n"; // help
+        all = '\n' + fraction + pow + sqrt + root + abs + substr + exp + log + loga + "\nConstants:\n";
         for (var i : greek) {
-            all += i + " \u2192 " + constants.get(i) + '\n';
+            all += i + " \u2192 " + constants.get(i) + ", ";
         }
+		all = all.substring(0, all.length()-2);
 		return all;
     } 
+
+	public static String toSuperscript(String str) {
+		String[] syms = str.split("");
+		str = "";
+		for (var i : syms) {
+			if (superscript.get(i) != null) {
+				str += superscript.get(i);
+			} else {
+				str += i;
+			}
+		}
+		return str;
+	}
+
+	public static String toSubscript(String str) {
+		String[] syms = str.split("");
+		str = "";
+		for (var i : syms) {
+			if (subscript.get(i) != null) {
+				str += subscript.get(i);
+			} else {
+				str += i;
+			}
+		}
+		return str;
+	}
+
+	public static String toRoot(String power, String exp) {
+		return toSuperscript(power) + "\u221A" + "__" + exp + "__ ";
+	}
+
+	public static String Convert(String str, String type) {
+		if (type.equals("/") || type.equals("_")) {
+			str = toSubscript(str.substring((type != "/") ? 1 : 0, str.length()));
+		} else if (type.equals("^") || type.equals("exp")) {
+			if (type == "exp") {
+				str = toSuperscript(str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"))) + str.substring(str.lastIndexOf(")") + 1, str.length());
+			} else {
+				str = toSuperscript(str.substring(type.length(), str.length()));
+			}
+		} else if (type.equals("abs")) {
+			str = str.replace("abs(", "|");
+			int lastInd = str.lastIndexOf(")");
+			str = str.substring(0, lastInd) + "|" + str.substring(lastInd + 1, str.length());
+		} else if (type.equals("sqrt") || type.equals("root")) {
+			Matcher matcher = Pattern.compile("root\\(.+,\\s?.+\\)").matcher(str);
+			if (matcher.find()) { 
+				int space = (str.charAt(str.indexOf(",") + 1) == ' ') ? 2 : 1;
+				str = toRoot(str.substring(str.indexOf("("), str.indexOf(",")), str.substring(str.indexOf(",") + space, str.length() - 2));
+			} else {
+				str = str.replace("sqrt(", "root(");
+				str = toRoot(str.substring(4, str.indexOf("(")), str.substring(str.indexOf("(") + 1, str.length() - 2));
+			}
+		} else if (type.equals("log")) {
+			String newstr = "";
+			Matcher matcher = Pattern.compile("log\\(.+,\\s?.+\\)").matcher(str);
+			if (matcher.find()) { 
+				int space = (str.charAt(str.indexOf(",") + 1) == ' ') ? 2 : 1;
+				newstr = "log" + toSubscript(str.substring(str.indexOf("(") + 1, str.indexOf(","))) + "(" + str.substring(str.indexOf(",") + space, str.length());
+			} else {
+				newstr = "log" + toSubscript((str.substring(3, str.indexOf("(")).isEmpty()) ? "2" : str.substring(3, str.indexOf("("))) + str.substring(str.indexOf("("), str.length());
+			}
+			str = newstr;
+		} else if (type.equals("pow")) {
+			String newstr = "";
+			Matcher matcher = Pattern.compile("pow\\(.+,\\s?.+\\)").matcher(str);
+			if (matcher.find()) { 
+				int space = (str.charAt(str.indexOf(",") + 1) == ' ') ? 2 : 1;
+				newstr = str.substring(str.indexOf("(") + 1, str.indexOf(",")) + toSuperscript(str.substring(str.indexOf(",") + space, str.length()-1));
+			}
+			str = newstr;
+		} else {
+			return str;
+		}
+		return str;
+	}
+
+	public class StringFormatter {  
+		public static String reverseString(String str){  
+			StringBuilder sb=new StringBuilder(str);  
+			sb.reverse();  
+			return sb.toString();  
+		}  
+	}
+
 
     @Override
     public void start(Context context) throws NoSuchMethodException {
         patcher.patch(ChatInputViewModel.class.getDeclaredMethod("sendMessage", Context.class, MessageManager.class, MessageContent.class, List.class, boolean.class, Function1.class),
-                new PreHook(cf -> {
-                    var thisobj = (ChatInputViewModel) cf.thisObject;
-                    var content = (MessageContent) cf.args[2];
-                    try {
-                        var mes = content.component1().trim() + " "; // получить сообщение как строку
-                        String newmes = "";
+            new PreHook(cf -> {
+				var thisobj = (ChatInputViewModel) cf.thisObject;
+				var content = (MessageContent) cf.args[2];
+				try {
+					var mes = content.component1().trim() + " "; // get message as string
+					String newmes = "";
 
-                        int ind = mes.indexOf("++[");
-		        newmes = mes.substring(0, ind);
-		
-		        while (ind > -1 && mes.indexOf("]", ind) > -1) {
-		            String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // x**6 + 13 - 12/13
-		
-		            if (exp.equals("help")) {
-		                newmes += "\n```" + help("") + "```";
-		            } else {
-		                // fraction, pow, sqrt, abs, substr, exp, log, constants
-		
-		                for (var c : greek) {
-		                    exp = exp.replaceAll(c, constants.get(c)); // constants
-		                }
-		                //exp = "12/4 ";
-		                //String as1 = "((\\s[^\\s]*)|(^[^\\s]*)|(\\([^\\s]*))";
-		                //String as2 = "(([^\\s]*\\s)|([^\\s]*$)|([^\\s]*\\)))";
-		                String as1 = "[^\\s\\(\\)]*", as2 = as1; // any symbol, except space and ( )
-		                Matcher matcher = Pattern.compile(as1+"\\/"+as2+ "|" +as1+"\\*\\*"+as2+ "|" +as1+"\\^"+as2+ "|" +as1+"_"+as2).matcher(exp);
-		                List<String> matchesList = new ArrayList<String>();
-		                while (matcher.find()) { 
-		                    matchesList.add(matcher.group());
-		                }
-		                for (var find : matchesList) {
-		                    //System.out.println("here: " + find + "!");
-		                    exp = exp.replace(find, Type2(find)); // fractions, pow, nth element
-		                }
-				newmes += exp;
-			    }
-		            newmes += mes.substring(mes.indexOf("]", ind)+1, mes.indexOf("++[", mes.indexOf("]", ind)) == -1 ? mes.length() : mes.indexOf("++[", mes.indexOf("]", ind)));
-		            ind = mes.indexOf("++[", mes.indexOf("]", ind));
-		        }
-                        ReflectUtils.setField(content, "textContent", newmes.trim());
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }));
+					int ind = mes.indexOf("++[");
+					newmes = mes.substring(0, ind);
+
+					while (ind > -1 && mes.indexOf("]", ind) > -1) {
+						String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // expression without ++[]
+
+						if (exp.equals("help")) {
+							newmes += "\n```" + help("") + "```";
+						} else {
+							for (var c : greek) { exp = exp.replaceAll(c, constants.get(c));  } // constants
+							exp = exp.replaceAll("\\*\\*", "\\^");
+
+							for (String key: fractions.keySet()) {
+								exp = exp.replace(key, fractions.get(key)); // fractions
+							}
+
+							int i = exp.indexOf("/");
+							while (i > -1) {
+								int p = i;
+								//if (type == 1) p += operations[type][op].length();
+								int s = 0;
+								String operation = ""+exp.charAt(p);
+								char symbol = 'a';
+								while ((symbol != ' ' || s < 0) && p > 0) {
+									p--;
+									symbol = exp.charAt(p);
+									if (symbol == '(') s++;
+									if (symbol == ')') s--;
+									if (s > 0) break;
+									operation += symbol;
+								}
+								operation = StringFormatter.reverseString(operation);
+								//System.out.println("|" + operation + "|" + toSuperscript(operation.substring(0, operation.length()-1))+ "/");
+								exp = exp.replace(operation, toSuperscript(operation.substring(0, operation.length()-1)) + "/");
+								i = exp.indexOf("/", i+1);
+							}
+							
+							String[] operations = {"/", "^", "_", "exp", "abs", "sqrt", "pow", "root", "log"};
+							for (var type = 0; type < operations.length; type++) {
+								int p = exp.indexOf(operations[type]);
+								while (p > -1) {
+									int s = 0;
+									String operation = ""+exp.charAt(p);
+									char symbol = 'a';
+									while ((symbol != ' ' || s > 0) && p < exp.length()-1) {
+										p++;
+										symbol = exp.charAt(p);
+										if (symbol == '(') s++;
+										if (symbol == ')') s--;
+										if (s < 0) break;
+										if (s == 0 && symbol == ',') break;
+										operation += symbol;
+									}
+									exp = exp.replace(operation, ((operations[type] == "exp") ? "e" : "") + Convert(operation, operations[type]));
+									p = (operations[type] == "/" || operations[type] == "log") ? exp.indexOf(operations[type], p + ((operations[type] == "log") ? 3 : 0)) : exp.indexOf(operations[type]);
+								}
+							}
+							newmes += exp;
+						}
+
+						newmes += mes.substring(mes.indexOf("]", ind)+1, mes.indexOf("++[", mes.indexOf("]", ind)) == -1 ? mes.length() : mes.indexOf("++[", mes.indexOf("]", ind)));
+						ind = mes.indexOf("++[", mes.indexOf("]", ind));
+					}
+					ReflectUtils.setField(content, "textContent", newmes.trim());
+				} catch (NoSuchFieldException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+		}));
     }
 
     @Override
