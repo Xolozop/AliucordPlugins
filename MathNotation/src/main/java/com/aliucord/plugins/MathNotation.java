@@ -209,10 +209,10 @@ public class MathNotation extends Plugin {
 			Matcher matcher = Pattern.compile("root\\(.+,\\s?.+\\)").matcher(str);
 			if (matcher.find()) { 
 				int space = (str.charAt(str.indexOf(",") + 1) == ' ') ? 2 : 1;
-				str = toRoot(str.substring(str.indexOf("("), str.indexOf(",")), str.substring(str.indexOf(",") + space, str.length() - 2));
+				str = toRoot(str.substring(str.indexOf("("), str.indexOf(",")), str.substring(str.indexOf(",") + space, str.length() - 1));
 			} else {
 				str = str.replace("sqrt(", "root(");
-				str = toRoot(str.substring(4, str.indexOf("(")), str.substring(str.indexOf("(") + 1, str.length() - 2));
+				str = toRoot(str.substring(4, str.indexOf("(")), str.substring(str.indexOf("(") + 1, str.length() - 1));
 			}
 		} else if (type.equals("log")) {
 			String newstr = "";
