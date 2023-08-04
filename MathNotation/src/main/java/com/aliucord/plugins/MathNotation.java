@@ -249,72 +249,71 @@ public class MathNotation extends Plugin {
     @Override
     public void start(Context context) throws NoSuchMethodException {
         patcher.patch(ChatInputViewModel.class.getDeclaredMethod("sendMessage", Context.class, MessageManager.class, MessageContent.class, List.class, boolean.class, Function1.class),
-            new PreHook(cf -> {
-				var thisobj = (ChatInputViewModel) cf.thisObject;
-				var content = (MessageContent) cf.args[2];
-				try {
-					var mes = content.component1().trim() + " "; // get message as string
-					String newmes = "";
+                new PreHook(cf -> {
+                    var thisobj = (ChatInputViewModel) cf.thisObject;
+                    var content = (MessageContent) cf.args[2];
+                    try {
+                        var mes = content.component1().trim() + " "; // получить сообщение как строку
+                        String newmes = "";
+                        int ind = mes.indexOf("++[");
+		        		newmes = mes.substring(0, ind);
 
-					int ind = mes.indexOf("++[");
-					newmes = mes.substring(0, ind);
-
-					while (ind > -1 && mes.indexOf("]", ind) > -1) {
-						String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // expression without ++[]
-
-						if (exp.equals("help")) {
-							newmes += "\n```" + help("") + "```";
-						} else {
-							for (var c : greek) { exp = exp.replaceAll(c, constants.get(c));  } // constants
-							exp = exp.replaceAll("\\*\\*", "\\^");
-
-							for (String key: fractions.keySet()) {
-								exp = exp.replace(key, fractions.get(key)); // fractions
-							}
-
-							int i = exp.indexOf("/");
-							while (i > -1) {
-								int p = i;
-								//if (type == 1) p += operations[type][op].length();
-								int s = 0;
-								String operation = ""+exp.charAt(p);
-								char symbol = 'a';
-								while ((symbol != ' ' || s < 0) && p > 0) {
-									p--;
-									symbol = exp.charAt(p);
-									if (symbol == '(') s++;
-									if (symbol == ')') s--;
-									if (s > 0) break;
-									operation += symbol;
+						while (ind > -1 && mes.indexOf("]", ind) > -1) {
+							String exp = mes.substring(ind+3, mes.indexOf("]", ind)); // expression without ++[]
+	
+							if (exp.equals("help")) {
+								newmes += "\n```" + help("") + "```";
+							} else {
+								for (var c : greek) { exp = exp.replaceAll(c, constants.get(c));  } // constants
+								exp = exp.replaceAll("\\*\\*", "\\^");
+	
+								for (String key: fractions.keySet()) {
+									exp = exp.replace(key, fractions.get(key)); // fractions
 								}
-								operation = StringFormatter.reverseString(operation);
-								//System.out.println("|" + operation + "|" + toSuperscript(operation.substring(0, operation.length()-1))+ "/");
-								exp = exp.replace(operation, toSuperscript(operation.substring(0, operation.length()-1)) + "/");
-								i = exp.indexOf("/", i+1);
-							}
-							
-							String[] operations = {"/", "^", "_", "exp", "abs", "sqrt", "pow", "root", "log"};
-							for (var type = 0; type < operations.length; type++) {
-								int p = exp.indexOf(operations[type]);
-								while (p > -1) {
+	
+								int i = exp.indexOf("/");
+								while (i > -1) {
+									int p = i;
+									//if (type == 1) p += operations[type][op].length();
 									int s = 0;
 									String operation = ""+exp.charAt(p);
 									char symbol = 'a';
-									while ((symbol != ' ' || s > 0) && p < exp.length()-1) {
-										p++;
+									while ((symbol != ' ' || s < 0) && p > 0) {
+										p--;
 										symbol = exp.charAt(p);
 										if (symbol == '(') s++;
 										if (symbol == ')') s--;
-										if (s < 0) break;
-										if (s == 0 && symbol == ',') break;
+										if (s > 0) break;
 										operation += symbol;
 									}
-									exp = exp.replace(operation, ((operations[type] == "exp") ? "e" : "") + Convert(operation, operations[type]));
-									p = (operations[type] == "/" || operations[type] == "log") ? exp.indexOf(operations[type], p + ((operations[type] == "log") ? 3 : 0)) : exp.indexOf(operations[type]);
+									operation = StringFormatter.reverseString(operation);
+									//System.out.println("|" + operation + "|" + toSuperscript(operation.substring(0, operation.length()-1))+ "/");
+									exp = exp.replace(operation, toSuperscript(operation.substring(0, operation.length()-1)) + "/");
+									i = exp.indexOf("/", i+1);
 								}
+								
+								String[] operations = {"/", "^", "_", "exp", "abs", "sqrt", "pow", "root", "log"};
+								for (var type = 0; type < operations.length; type++) {
+									int p = exp.indexOf(operations[type]);
+									while (p > -1) {
+										int s = 0;
+										String operation = ""+exp.charAt(p);
+										char symbol = 'a';
+										while ((symbol != ' ' || s > 0) && p < exp.length()-1) {
+											p++;
+											symbol = exp.charAt(p);
+											if (symbol == '(') s++;
+											if (symbol == ')') s--;
+											if (s < 0) break;
+											if (s == 0 && symbol == ',') break;
+											operation += symbol;
+										}
+										exp = exp.replace(operation, ((operations[type] == "exp") ? "e" : "") + Convert(operation, operations[type]));
+										p = (operations[type] == "/" || operations[type] == "log") ? exp.indexOf(operations[type], p + ((operations[type] == "log") ? 3 : 0)) : exp.indexOf(operations[type]);
+									}
+								}
+								newmes += exp;
 							}
-							newmes += exp;
-						}
 
 						newmes += mes.substring(mes.indexOf("]", ind)+1, mes.indexOf("++[", mes.indexOf("]", ind)) == -1 ? mes.length() : mes.indexOf("++[", mes.indexOf("]", ind)));
 						ind = mes.indexOf("++[", mes.indexOf("]", ind));
